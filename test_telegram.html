@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Telegram</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="bot_config.js"></script>
+</head>
+<body>
+    <h1>Test Telegram Send</h1>
+    <button id="testBtn">إرسال رسالة تجريبية</button>
+    <div id="result"></div>
+
+    <script>
+        $('#testBtn').click(function() {
+            var telegramMessage = "رسالة تجريبية من " + new Date().toLocaleString();
+            var telegramBotUrl = "https://api.telegram.org/bot" + botConfig.botToken + "/sendMessage";
+            var requestData = {
+                chat_id: botConfig.chatId,
+                text: telegramMessage
+            };
+
+            $('#result').html('جاري الإرسال...');
+            
+            $.post(telegramBotUrl, requestData, function(response) {
+                $('#result').html('✅ تم الإرسال بنجاح: ' + JSON.stringify(response, null, 2));
+                console.log('نجح الإرسال:', response);
+            }).fail(function(error) {
+                $('#result').html('❌ فشل الإرسال: ' + JSON.stringify(error, null, 2));
+                console.error('فشل الإرسال:', error);
+            });
+        });
+    </script>
+</body>
+</html>

